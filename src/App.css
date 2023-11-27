@@ -314,3 +314,7 @@ section > * { max-width: 1600px; margin-left: auto; margin-right: auto }
 .data-table tr button:focus {
     background-color: darkblue;
 }
+
+.data-table tr button.delete {
+    background-color: red;
+}

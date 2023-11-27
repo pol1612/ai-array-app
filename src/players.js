@@ -1,7 +1,8 @@
 // players.js
 
 
-const arrPlayers = [
+export function players()  { 
+  return ([
   {
     id: 1,
     firstName: 'Lionel',
@@ -112,7 +113,7 @@ const arrPlayers = [
     bio: 'Harry Kane, born on July 28, 1993, is an English striker known for his goal-scoring prowess and leadership on and off the field...',
     img: 'https://example.com/kane.jpg',
   },
-];
+])}
   
-  export default arrPlayers;
+
   
