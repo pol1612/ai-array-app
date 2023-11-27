@@ -1,4 +1,74 @@
-/*  ============= WEB BROWSER RESETS ============ */
+const fs = require('fs');
+const path = require('path');
+
+// New content for manifest.json
+const newManifestJsonContent = `{
+    "short_name": "React App",
+    "name": "Create React App Sample",
+    "start_url": ".",
+    "display": "standalone",
+    "theme_color": "#000000",
+    "background_color": "#ffffff"
+}`;
+
+
+// New content for index.html
+const newIndexHtmlContent = `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Minimal React App</title>
+    <meta name="description" content="Minimal website created using create-react-app" />
+    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+</head>
+
+<body>
+
+    <div id="root"></div>
+
+</body>
+</html>`;
+
+// New content for index.js
+const newIndexJsContent = `import React from 'react';
+import ReactDOM from 'react-dom/client';
+import App from './App';
+import './App.css';
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+
+root.render(
+    <React.StrictMode>
+        <App />
+    </React.StrictMode>
+);`;
+
+// New content for App.js with extra line break before the final line
+const newAppJsContent = `function App() {
+    return (
+        <div style={{ 
+            paddingTop: '20px',
+            backgroundColor: 'lightgreen',
+            textAlign: 'center', 
+            height: '100vh',
+        }}>
+            <h1 style={{ letterSpacing: '-1px', fontFamily: 'sans-serif', fontWeight: '100', fontSize: '56px', marginBottom: '14px'}} ><i>F&aacute;ilte from Ireland</i></h1>
+            <img src="https://munnelly.com/irish-software-developer.jpg" style={{ 
+                maxWidth: '640px',
+                textAlign: 'center',
+                marginBottom: '12px', 
+            }}/>
+            <h2 style={{ fontFamily: 'monospace', letterSpacing: '4px', fontFamily: 'sans-serif'}}>C:\\ The software capital of the world _</h2>
+        </div>
+    );
+}   
+
+export default App;`;
+
+
+// New content for App.css with extra line break before the final line
+const newAppCSSContent = `/*  ============= WEB BROWSER RESETS ============ */
 * { margin: 0; padding: 0; border: none }
 *, *::before, *::after { box-sizing: border-box }
 html { height: 100%; font-size: 100%; font: inherit; vertical-align: baseline;
@@ -276,41 +346,79 @@ section { max-width: 1920px }
 section > * { max-width: 1600px }
 
 /* When content width < viewport width, equalise spacing at left and right */
-section > * { max-width: 1600px; margin-left: auto; margin-right: auto }
+section > * { max-width: 1600px; margin-left: auto; margin-right: auto }`;
 
-/* Tables */
-.data-table {
-    border-collapse: collapse;
-    font-size: 18px;
-    width: 100%;
-    overflow: scroll; 
-    margin-bottom: 56px;
-    border: solid 1px #888;
-    box-shadow: 8px 8px 8px #888;  
+
+// Function to write content to a file
+const writeToFile = (filePath, content) => {
+    fs.writeFile(filePath, content, 'utf8', (err) => {
+        if (err) {
+            console.error(`Error writing to ${filePath}:`, err);
+            return;
+        }
+        console.log(`${filePath} has been updated successfully.`);
+    });
+};
+
+
+function deleteFiles() {
+    // Files to delete in /public
+    const publicFilesToDelete = [
+        'favicon.ico',
+        'logo192.png',
+        'logo512.png'
+    ];
+
+    // Files to delete in /src
+    const srcFilesToDelete = [
+        'logo.svg',
+        'reportWebVitals.js',
+        'setupTests.js',
+        'App.test.js'
+    ];
+
+    // Delete files in /public
+    publicFilesToDelete.forEach(file => {
+        const filePath = path.join(__dirname, 'public', file);
+        deleteFile(filePath);
+    });
+
+    // Delete files in /src
+    srcFilesToDelete.forEach(file => {
+        const filePath = path.join(__dirname, 'src', file);
+        deleteFile(filePath);
+    });
 }
 
-.data-table th, .data-table td { 
-    padding: 8px 18px;
-    border-bottom: solid 1px #222 
+function deleteFile(filePath) {
+    fs.unlink(filePath, (err) => {
+        if (err) {
+            console.error(`Error deleting ${filePath}:`, err);
+            return;
+        }
+        console.log(`${filePath} has been deleted successfully.`);
+    });
 }
 
-.data-table th { 
-    background-color: #fffceb;
-    font-weight: 700;
-    text-align: left;
-}
+// Deleting files
+deleteFiles();
 
-.data-table tr:nth-child(odd)  { background-color: #fff }
-.data-table tr:nth-child(even) { background-color: #E1E4E7 }
 
-.data-table tr button {
-    padding: 6px 12px;
-    background-color: blue;
-    color: #fff;
-    font-weight: bold;
-}
 
-.data-table tr button:hover,
-.data-table tr button:focus {
-    background-color: darkblue;
-}
+
+
+
+
+// File paths
+const indexPath = path.join(__dirname, 'public', 'index.html');
+const indexJsPath = path.join(__dirname, 'src', 'index.js');
+const appJsPath = path.join(__dirname, 'src', 'App.js');
+const appCSSPath = path.join(__dirname, 'src', 'App.css');
+const appManifestPath = path.join(__dirname, 'public', 'manifest.json');
+
+// Writing new content to files
+writeToFile(indexPath, newIndexHtmlContent);
+writeToFile(indexJsPath, newIndexJsContent);
+writeToFile(appJsPath, newAppJsContent);
+writeToFile(appCSSPath, newAppCSSContent);
+writeToFile(appManifestPath, newManifestJsonContent);

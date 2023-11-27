@@ -1,24 +1,39 @@
-import logo from './logo.svg';
-import './App.css';
+
+import React from 'react';
+import arrPlayers from './players'; // Import the array from the players.js file
+
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <section className='w-1140px'>
+      <h1>Top Soccer Players</h1>
+      <table className='data-table'> 
+        <thead>
+          <tr>
+            <th>Rank</th>
+            <th>Name</th>
+            <th>Trophies</th>
+            <th>Club</th>
+            <th>Nationality</th>
+            <th>Details</th>
+          </tr>
+        </thead>
+        <tbody>
+          {arrPlayers.map((player) => (
+            <tr key={player.id}>
+              <td>{player.id}</td>
+              <td>{`${player.firstName} ${player.lastName} (${player.age})`}</td>
+              <td>{player.trophies.join(', ')}</td>
+              <td>{player.club}</td>
+              <td>{player.nationality}</td>
+              <td>
+                <button>More...</button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </section>
   );
 }
 
